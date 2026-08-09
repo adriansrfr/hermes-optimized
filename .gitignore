@@ -1,0 +1,33 @@
+# Secrets
+.env
+.auth.json
+
+# Runtime data
+*.db
+*.db-shm
+*.db-wal
+*.lock
+*.tmp
+.log
+
+# Cache
+cache/
+audio_cache/
+image_cache/
+tokens_rate.log
+
+# Sessions & state
+sessions/
+state/
+gateway_state.json
+
+# Platform data
+whatsapp/
+auth.json
+
+# History
+.hermes_history
+
+# OS artifacts
+.DS_Store
+Thumbs.db

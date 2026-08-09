@@ -1,0 +1,72 @@
+model:
+  default: anthropic/claude-sonnet-4  # override with HERMES_MODEL or .env
+  provider: anthropic
+  base_url: https://api.anthropic.com
+
+agent:
+  max_turns: 150
+  verbose: false
+  reasoning_effort: medium
+  personalities:
+    default: You are a helpful, capable AI assistant. Be concise and action-oriented.
+
+terminal:
+  backend: local
+  cwd: .
+  timeout: 180
+  home_mode: auto
+  lifetime_seconds: 300
+
+web:
+  backend: firecrawl
+  use_gateway: true
+
+browser:
+  inactivity_timeout: 120
+  cloud_provider: browser-use
+  use_gateway: true
+
+tool_loop_guardrails:
+  warnings_enabled: true
+  hard_stop_enabled: false
+  warn_after:
+    exact_failure: 2
+    same_tool_failure: 3
+    idempotent_no_progress: 2
+  hard_stop_after:
+    exact_failure: 5
+    same_tool_failure: 8
+    idempotent_no_progress: 5
+
+compression:
+  enabled: true
+  threshold: 0.5
+  target_ratio: 0.2
+  protect_last_n: 20
+  protect_first_n: 3
+  min_tail_user_messages: 1
+  max_attempts: 3
+
+prompt_caching:
+  cache_ttl: 5m
+
+display:
+  compact: false
+  busy_input_mode: interrupt
+  bell_on_complete: false
+  show_reasoning: false
+  streaming: true
+  skin: default
+  interim_assistant_messages: true
+  tool_progress: all
+
+# gateway: enable only if you need platform integrations (Discord, WhatsApp, Telegram, Slack, etc.)
+gateway:
+  enabled: false
+  platform: discord  # or whatsapp, telegram, slack, etc.
+
+# Uncomment and configure for Discord:
+# platforms:
+#   discord:
+#     token: ${DISCORD_BOT_TOKEN}
+#     home_channel_id: "123456789012345678"
