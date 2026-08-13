@@ -145,3 +145,10 @@ cp config.yaml ~/.hermes/config.yaml
 ## License
 
 MIT — do whatever you want with it.
+
+## Project Layout / Path Policy
+
+- Canonical path: `/mnt/external/Projects/`
+- Do not create/use symlinks between `~/Projects/` and `/mnt/external/Projects/`.
+- Long-running servers should use a user systemd service, not manual shell execution.
+- Rationale: split-brain paths caused stale code to stay live and made restarts race against themselves.
