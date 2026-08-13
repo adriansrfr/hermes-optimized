@@ -31,6 +31,13 @@ Opinionated Hermes Agent configuration and curated skills — stripped of all pe
 ### Model resilience
 - Cloud-first fallback chain, local Ollama last-resort (`gemma4:e2b-it-qat`), daily health checks, deterministic watchdog/cron for availability.
 
+### Cron & automation
+- **Silent-on-success pattern**: watchdog scripts emit nothing when healthy, one line when degraded.
+- **Self-contained prompts**: every cron job runs in a fresh session with no chat context.
+- **UTC schedules**: Hermes evaluates cron in UTC; convert local time explicitly.
+- **Idempotent by design**: safe to repeat daily until manually removed.
+- **`cron/templates/`**: reusable `watchdog.md` and `prompt-patterns.md` for vault health, provider checks, disk/memory alerts.
+
 ## What's in here
 
 | Path | Purpose |
@@ -42,7 +49,8 @@ Opinionated Hermes Agent configuration and curated skills — stripped of all pe
 | `USER.md` | User profile template |
 | `profiles/sample/` | Example profile with config + skills |
 | `skills/` | Curated skill pack encoding Pareto, TDD, systematic debugging, wiki maintenance, model cataloging |
-| `docs/` | Setup guides, FAQ, troubleshooting |
+| `cron/` | Templates and patterns for silent-on-success watchdogs and self-contained cron prompts |
+| `docs/` | Setup guides, FAQ, troubleshooting, disaster recovery |
 
 ## Quick start
 
