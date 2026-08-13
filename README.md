@@ -2,18 +2,46 @@
 
 Opinionated Hermes Agent configuration and curated skills — stripped of all personal data, optimized for real-world use, and designed to be cloned by anyone.
 
+## What's optimized
+
+### Context & cost efficiency
+- **Compression**: `compression.enabled` with `threshold: 0.5`, `target_ratio: 0.2`, `protect_last_n: 20`, `protect_first_n: 3` — keeps long sessions under control without losing early framing or recent turns.
+- **Prompt caching**: `prompt_caching.cache_ttl: 5m` — reduces repeat token spend on repeated system prompt hits.
+- **Reasoning discipline**: `agent.reasoning_effort: medium` — matches effort to task complexity instead of always maxing out.
+
+### Stability & loop prevention
+- **Tool loop guardrails**: graduated warnings then hard stops on exact failure repeats, same-tool thrashing, and idempotent no-progress loops.
+- **Bounded shell sessions**: `terminal.lifetime_seconds: 300` — forces periodic refresh instead of stale long-lived shells.
+- **Browser hygiene**: `browser.inactivity_timeout: 120` — kills idle browser sessions fast.
+
+### Responsiveness
+- `display.streaming: true` + `interim_assistant_messages: true` + `tool_progress: all` — streaming UX so it feels responsive, not batch-and-wait.
+
+### Knowledge systems
+- **Karpathy-style LLM Wiki**: folder `index.md` MOC pattern, concept-centric linking, cross-vault consolidation-first cleanup.
+- **OKF frontmatter alignment**: Google Open Knowledge Format v0.1 schema (`type`, `title`, `description`, `timestamp`) for semantic vault hygiene.
+- **Hybrid indexing**: SQLite + FTS5 + vector + link graph query router, with phased indexing for large vaults and vault-indexer integration.
+
+### Todo & task discipline
+- **Pareto-first ordering**: `todo-pareto-prioritization` skill — critical first, then Pareto impact/effort.
+- **Pareto install gate**: `software-install-pareto` — no new tool without function check.
+- **Minimalism constraints**: clutter rule, home/away split, session-recovery active plan blocks, demotion valve when backlog overflows.
+- **Systematic debugging**: 4-phase root-cause loop with hypothesis, minimal repro, and regression test.
+
+### Model resilience
+- Cloud-first fallback chain, local Ollama last-resort (`gemma4:e2b-it-qat`), daily health checks, deterministic watchdog/cron for availability.
+
 ## What's in here
 
 | Path | Purpose |
 |---|---|
-| `config.yaml` | Production-ready Hermes config with sane defaults |
+| `config.yaml` | Optimized config with compression, caching, guardrails, terminal bounds |
 | `.env.example` | Secrets template — copy to `.env`, fill in your keys |
 | `SOUL.md` | System prompt identity — customize for your own personality |
 | `MEMORY.md` | Memory prompt template |
 | `USER.md` | User profile template |
 | `profiles/sample/` | Example profile with config + skills |
-| `skills/` | Curated skill pack (read-only templates + copy-able skills) |
-| `scripts/` | Setup and maintenance helpers |
+| `skills/` | Curated skill pack encoding Pareto, TDD, systematic debugging, wiki maintenance, model cataloging |
 | `docs/` | Setup guides, FAQ, troubleshooting |
 
 ## Quick start
@@ -45,9 +73,9 @@ cp -r skills/* ~/.hermes/skills/
 
 ### Core files
 
-- **`config.yaml`** — main config. Sections: model, agent, terminal, web, browser, guardrails, compression, prompt caching, display, gateway. Edit directly or use `hermes config set`.
+- **`config.yaml`** — optimized config. Not vanilla defaults. Sections: model, agent, terminal, web, browser, guardrails, compression, prompt caching, display, gateway. Each tuned for real usage patterns.
 - **`.env.example`** → `.env` — API keys, provider tokens. Never commit `.env`.
-- **`SOUL.md`** — identity/personality prompt. Good defaults included.
+- **`SOUL.md`** — identity/personality prompt.
 - **`MEMORY.md`** — memory system prompt template.
 - **`USER.md`** — user profile template.
 
@@ -75,7 +103,16 @@ hermes config set profiles.active my-profile
 
 ### Curated skills
 
-The `skills/` directory contains a small, high-value set of broadly useful skills. Each skill is self-contained with a `SKILL.md` frontmatter file.
+The `skills/` directory contains skills that encode the optimizing principles:
+
+- **`systematic-debugging`** — 4-phase root-cause debugging: understand before fixing
+- **`test-driven-development`** — RED-GREEN-REFACTOR, tests before code
+- **`prompt-engineering`** — reliable first-pass results, minimal retries
+- **`todo-taxonomy`** — HOME/AWAY split, active plan blocks, demotion valve
+- **`todo-pareto-prioritization`** — Pareto impact/effort ordering
+- **`software-install-pareto`** — Pareto check before any new software install
+- **`free-model-catalog`** — scrape, rank, persist free models from provider APIs
+- **`plan`** — markdown plan to `.hermes/plans/`; no execution
 
 To install: copy the skill directories into `~/.hermes/skills/`.
 
@@ -83,7 +120,7 @@ To install: copy the skill directories into `~/.hermes/skills/`.
 
 - **No secrets** — everything public-safe, `.env`-gated
 - **No personal identifiers** — no usernames, paths, machine names, tokens
-- **Opinionated but portable** — good defaults that work across platforms
+- **Opinionated and optimized** — every non-default setting has a reason
 - **Minimal but complete** — essential config only, no bloat
 - **Extensible** — drop-in skills, profiles, and templates
 
